@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors")
 const { createTodo, updateTodo } = require("./types");
 const { userTodo } = require("./db");
 const app = express()
@@ -7,6 +8,12 @@ const app = express()
 app.use(express.json());
 
 const PORT = 3001
+
+app.use(cors());
+// Enable CORS for specific origins
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:3001/todos'] // Replace with your allowed origins
+}));
 
 // app.get("/", (req,res)=>{
 //     return res.send("Hi There")
@@ -33,8 +40,17 @@ app.post('/todo',async (req,res)=>{
     })
 })
 
-app.get('/todos', (req,res)=>{
-    
+app.get('/todos',async (req,res)=>{
+    try {
+        // Find all todos in the database
+        const todos = await userTodo.find({});
+        
+        // Send the todos as a JSON response
+        res.status(200).json(todos);
+    } catch (error) {
+        // Handle any errors
+        res.status(500).json({ error: "An error occurred while fetching todos." });
+    }
 })
 
 app.put('/completed',async (req,res)=>{
