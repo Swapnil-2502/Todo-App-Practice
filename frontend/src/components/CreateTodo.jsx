@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function CreateTodo(props) {
+export function CreateTodo() {
     // react-query
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -10,7 +10,6 @@ export function CreateTodo(props) {
             padding: 10,
             margin: 10
         }} type="text" placeholder="title" onChange={function(e) {
-            
             setTitle(e.target.value);
         }}></input> <br />
     
